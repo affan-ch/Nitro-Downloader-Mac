@@ -5,14 +5,14 @@
 import SwiftUI
 
 struct SidebarView: View {
-    @State private var selection: SidebarItem = .videos
+    @ObservedObject var viewModel: SidebarViewModel
     
     var body: some View {
         NavigationSplitView {
             
             Divider()
             
-            List(selection: $selection) {
+            List(selection: $viewModel.selectedItem) {
                 
                 Text("MEDIA DOWNLOADS")
                     .font(.system(size: 10))
@@ -65,7 +65,7 @@ struct SidebarView: View {
                             Image("instagram")
                                 .resizable()
                                 .renderingMode(.template)
-                                .foregroundStyle(selection == .instagram ? .white : .blue)
+                                .foregroundStyle(viewModel.selectedItem == .instagram ? .white : .blue)
                                 .frame(width: 15, height: 15)
                         }
                     }
@@ -76,7 +76,7 @@ struct SidebarView: View {
                             Image("facebook")
                                 .resizable()
                                 .renderingMode(.template)
-                                .foregroundStyle(selection == .facebook ? .white : .blue)
+                                .foregroundStyle(viewModel.selectedItem == .facebook ? .white : .blue)
                                 .frame(width: 15, height: 15)
                         }
                     }
@@ -87,7 +87,7 @@ struct SidebarView: View {
                             Image("tiktok")
                                 .resizable()
                                 .renderingMode(.template)
-                                .foregroundStyle(selection == .tiktok ? .white : .blue)
+                                .foregroundStyle(viewModel.selectedItem == .tiktok ? .white : .blue)
                                 .frame(width: 15, height: 15)
                         }
                     }
@@ -100,7 +100,7 @@ struct SidebarView: View {
         }
         detail: {
             Group {
-                switch selection {
+                switch viewModel.selectedItem {
                 case .videos: VideosView()
                 case .playlists: PlaylistsView()
                 case .musics: MusicsView()
