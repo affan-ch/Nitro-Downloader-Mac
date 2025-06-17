@@ -1,13 +1,12 @@
 
-//  Nitro_DownloaderApp.swift
+// Main App.swift
 
 
 import SwiftUI
 
 @main
-struct Nitro_DownloaderApp: App {
+struct MainApp: App {
     @StateObject private var sidebarViewModel = SidebarViewModel()
-
 
     var body: some Scene {
         WindowGroup {

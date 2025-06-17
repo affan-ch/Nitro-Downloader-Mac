@@ -1,12 +1,12 @@
 
-//  VideosView.swift
+//  Format Converter View.swift
 
 
 import SwiftUI
 
-struct VideosView: View {
+struct FormatConverterView: View {
     var body: some View {
-        Text("Videos Page")
+        Text("Format Converter Page")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

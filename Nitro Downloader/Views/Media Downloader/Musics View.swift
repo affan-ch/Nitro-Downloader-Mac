@@ -1,12 +1,12 @@
 
-//  TorrentsView.swift
+// Musics View.swift
 
 
 import SwiftUI
 
-struct TorrentsView: View {
+struct MusicsView: View {
     var body: some View {
-        Text("Torrents Downloader Page")
+        Text("Musics Page")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

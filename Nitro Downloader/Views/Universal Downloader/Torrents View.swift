@@ -1,12 +1,12 @@
 
-//  FacebookView.swift
+//  Torrents View.swift
 
 
 import SwiftUI
 
-struct FacebookView: View {
+struct TorrentsView: View {
     var body: some View {
-        Text("Facebook Page")
+        Text("Torrents Downloader Page")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

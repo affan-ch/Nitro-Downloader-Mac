@@ -1,12 +1,12 @@
 
-//  InstagramView.swift
+// Playlists View.swift
 
 
 import SwiftUI
 
-struct InstagramView: View {
+struct PlaylistsView: View {
     var body: some View {
-        Text("Instagram Page")
+        Text("Playlists Page")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

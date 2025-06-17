@@ -1,13 +1,13 @@
 
-//  ThumbnailView.swift
+//  Site Grabber View.swift
 
 
 import SwiftUI
 
-struct ThumbnailsView: View {
+struct SiteGrabberView: View {
     var body: some View {
         VStack {
-            Text("Thumbnails")
+            Text("Site Grabber View")
         }
         .padding()
     }

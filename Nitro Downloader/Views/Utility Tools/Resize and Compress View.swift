@@ -1,12 +1,12 @@
 
-//  TikTokView.swift
+//  Resize and Compress View.swift
 
 
 import SwiftUI
 
-struct TikTokView: View {
+struct ResizeAndCompressView: View {
     var body: some View {
-        Text("TikTok Page")
+        Text("Resize and Compress Page")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

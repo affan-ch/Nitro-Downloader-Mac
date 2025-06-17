@@ -1,13 +1,12 @@
 
-//  FTPsView.swift
+//  Trim and Clip View.swift
 
 
 import SwiftUI
 
-struct FTPsView: View {
+struct TrimAndClipView: View {
     var body: some View {
-        Text("Remote File Server Downloader Page")
+        Text("Trim and Clip Page")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
-

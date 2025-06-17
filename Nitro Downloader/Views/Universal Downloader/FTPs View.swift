@@ -1,12 +1,13 @@
 
-//  PlaylistsView.swift
+//  FTPs View.swift
 
 
 import SwiftUI
 
-struct PlaylistsView: View {
+struct FTPsView: View {
     var body: some View {
-        Text("Playlists Page")
+        Text("Remote File Server Downloader Page")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
+
