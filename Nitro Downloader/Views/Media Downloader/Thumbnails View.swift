@@ -1,5 +1,5 @@
 
-//  Thumbnails View.swift
+// Thumbnails View.swift
 
 
 import SwiftUI

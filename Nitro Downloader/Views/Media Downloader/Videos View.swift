@@ -6,7 +6,9 @@ import SwiftUI
 
 struct VideosView: View {
     @StateObject private var viewModel = VideosViewModel()
-
+    private let toolbarButtonVerticalPadding: CGFloat = 6
+    private let toolbarButtonHorizontalPadding: CGFloat = 8
+    
     var body: some View {
         VStack(spacing: 0) {
             // The Table is the main content
@@ -18,7 +20,7 @@ struct VideosView: View {
                         .help(item.fileName) // Show full name on hover
                 }
                 .width(min: 200)
-
+                
                 if viewModel.columnVisibility.size {
                     TableColumn("Size", value: \.size) { item in
                         Text(String(format: "%.1f MB", item.size))
@@ -33,7 +35,7 @@ struct VideosView: View {
                     }
                     .width(120)
                 }
-
+                
                 if viewModel.columnVisibility.timeLeft {
                     TableColumn("Time Left", value: \.timeLeft).width(80)
                 }
@@ -41,7 +43,7 @@ struct VideosView: View {
                 if viewModel.columnVisibility.downloadSpeed {
                     TableColumn("Speed", value: \.downloadSpeed).width(100)
                 }
-
+                
                 if viewModel.columnVisibility.lastTryDate {
                     TableColumn("Last Try", value: \.lastTryDate.timeIntervalSince1970) { item in
                         Text(item.lastTryDate, style: .relative)
@@ -69,7 +71,7 @@ struct VideosView: View {
         .navigationTitle("Video Downloads")
         .searchable(text: $viewModel.searchText, prompt: "Search by Name or Description")
         .sheet(isPresented: $viewModel.isShowingSettings) {
-            SettingsView() // A placeholder for your settings modal
+            VideoSettingsView() // A placeholder for your settings modal
         }
         .toolbar {
             
@@ -80,42 +82,45 @@ struct VideosView: View {
                     Button("Add Bulk from File...", action: viewModel.addBulkDownload)
                 } label: {
                     Label("Add Download", systemImage: "plus")
+                        .padding(.vertical, toolbarButtonVerticalPadding)
+                        .padding(.horizontal, toolbarButtonHorizontalPadding)
                 }
                 .help("Add new downloads")
             }
-
+            
+            
             // MARK: Right Toolbar Group
             ToolbarItemGroup(placement: .primaryAction) {
                 
                 // --- Action Buttons ---
                 Button(action: viewModel.resumeSelected) {
                     Label("Resume", systemImage: "play.fill")
-                        .font(.title3)
-                        .padding(.horizontal, 8)
+                        .padding(.vertical, toolbarButtonVerticalPadding)
+                        .padding(.horizontal, toolbarButtonHorizontalPadding)
                 }
                 .help("Resume selected download")
                 .disabled(!viewModel.canResume)
-
+                
                 Button(action: viewModel.stopSelected) {
                     Label("Stop", systemImage: "pause.fill")
-                        .font(.title3)
-                        .padding(.horizontal, 8)
+                        .padding(.vertical, toolbarButtonVerticalPadding)
+                        .padding(.horizontal, toolbarButtonHorizontalPadding)
                 }
                 .help("Pause selected download")
                 .disabled(!viewModel.canStop)
                 
                 Button(action: viewModel.stopAllSelected) {
                     Label("Stop All", systemImage: "stop.fill")
-                        .font(.title3)
-                        .padding(.horizontal, 8)
+                        .padding(.vertical, toolbarButtonVerticalPadding)
+                        .padding(.horizontal, toolbarButtonHorizontalPadding)
                 }
                 .help("Pause all selected downloads")
                 .disabled(!viewModel.canStopAll)
-
+                
                 Button(action: viewModel.deleteSelected) {
                     Label("Delete", systemImage: "trash")
-                        .font(.title3)
-                        .padding(.horizontal, 8)
+                        .padding(.vertical, toolbarButtonVerticalPadding)
+                        .padding(.horizontal, toolbarButtonHorizontalPadding)
                 }
                 .help("Delete selected downloads")
                 .disabled(!viewModel.canDelete)
@@ -134,9 +139,11 @@ struct VideosView: View {
                     }
                 } label: {
                     Label("Filter", systemImage: "line.3.horizontal.decrease.circle")
+                        .padding(.vertical, toolbarButtonVerticalPadding)
+                        .padding(.horizontal, toolbarButtonHorizontalPadding)
                 }
                 .help("Filter items by status")
-
+                
                 Menu {
                     Toggle("Size", isOn: $viewModel.columnVisibility.size)
                     Toggle("Status", isOn: $viewModel.columnVisibility.status)
@@ -148,11 +155,15 @@ struct VideosView: View {
                     Toggle("Download URL", isOn: $viewModel.columnVisibility.downloadURL)
                 } label: {
                     Label("Toggle Columns", systemImage: "tablecells")
+                        .padding(.vertical, toolbarButtonVerticalPadding)
+                        .padding(.horizontal, toolbarButtonHorizontalPadding)
                 }
                 .help("Show or hide table columns")
                 
                 Button(action: viewModel.openSettings) {
                     Label("Settings", systemImage: "gearshape")
+                        .padding(.vertical, toolbarButtonVerticalPadding)
+                        .padding(.horizontal, toolbarButtonHorizontalPadding)
                 }
                 .help("Open application settings")
             }
@@ -161,7 +172,7 @@ struct VideosView: View {
 }
 
 // A placeholder for your Settings modal
-struct SettingsView: View {
+struct VideoSettingsView: View {
     @Environment(\.dismiss) var dismiss
     var body: some View {
         VStack {

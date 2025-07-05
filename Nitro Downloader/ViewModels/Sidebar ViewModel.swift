@@ -31,4 +31,6 @@ enum SidebarItem: String, CaseIterable, Hashable {
     case formatConverter
     case trimAndClip
     case resizeAndCompress
+    case settings
+    case dependenciesManager
 }

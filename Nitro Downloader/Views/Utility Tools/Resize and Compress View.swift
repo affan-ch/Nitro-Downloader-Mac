@@ -1,5 +1,5 @@
 
-//  Resize and Compress View.swift
+// Resize and Compress View.swift
 
 
 import SwiftUI

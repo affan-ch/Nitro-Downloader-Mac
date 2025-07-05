@@ -1,5 +1,5 @@
 
-//  Trim and Clip View.swift
+// Trim and Clip View.swift
 
 
 import SwiftUI
