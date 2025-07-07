@@ -73,6 +73,9 @@ struct VideosView: View {
         .sheet(isPresented: $viewModel.isShowingSettings) {
             VideoSettingsView() // A placeholder for your settings modal
         }
+        .sheet(isPresented: $viewModel.isShowingAddSingleDownload) {
+            AddSingleVideoDownloadView(onStartDownload: viewModel.addDownload)
+        }
         .toolbar {
             
             // MARK: Left Toolbar Group
@@ -185,5 +188,137 @@ struct VideoSettingsView: View {
         }
         .frame(width: 400, height: 300)
         .padding()
+    }
+}
+
+
+
+
+struct AddSingleVideoDownloadView: View {
+    @StateObject private var viewModel = AddSingleVideoDownloadViewModel()
+    @Environment(\.dismiss) var dismiss
+    
+    let onStartDownload: ((_ command: [String], _ title: String, _ sourceURL: URL) -> Void)
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            Form {
+                // --- Section 1: URL Input & Video Title ---
+                Section {
+                    // This HStack is now stable and won't misalign
+                    HStack {
+                        TextField("Video URL", text: $viewModel.urlString, prompt: Text("https://..."))
+                            .textFieldStyle(.roundedBorder)
+                        
+                        Button(action: viewModel.fetchFormats) {
+                            Label("Fetch", systemImage: "arrow.down.circle")
+                        }
+                        .disabled(!viewModel.canFetch || viewModel.isFetchingFormats)
+                        .overlay { // Use overlay to prevent layout shift
+                            if viewModel.isFetchingFormats {
+                                ProgressView().scaleEffect(0.7)
+                            }
+                        }
+                    }
+                    
+                    if !viewModel.videoTitle.isEmpty {
+                        Text(viewModel.videoTitle)
+                            .font(.headline)
+                            .foregroundColor(.secondary)
+                            .padding(.top, 4)
+                    }
+                }
+                
+                // --- Section 2: Video Info (NEW) ---
+                if !viewModel.uploaderName.isEmpty {
+                    Section("Video Information") {
+                        LabeledContent("Uploader", value: viewModel.uploaderName)
+                        
+                        // For a more compact layout that fits more info:
+                        HStack(spacing: 12) { // Use less spacing
+                            InfoItem(icon: "eye", value: viewModel.formattedViewCount, label: "Views")
+                            Divider()
+                            InfoItem(icon: "hand.thumbsup", value: viewModel.formattedLikeCount, label: "Likes")
+                            Divider()
+                            InfoItem(icon: "text.bubble", value: viewModel.formattedCommentCount, label: "Comments")
+                            Divider()
+                            InfoItem(icon: "clock", value: viewModel.durationString, label: "Duration")
+                            Divider()
+                            InfoItem(icon: "calendar", value: viewModel.formattedUploadDate, label: "Uploaded")
+
+                        }
+                        .frame(height: 40) // Give the HStack a fixed height for stability
+                        .foregroundStyle(.secondary)
+                    }
+                }
+                
+                // --- Section 3: Quality & Format ---
+                Section("Quality & Format") {
+                    Picker("Video Quality", selection: $viewModel.selectedVideoFormatId) {
+                        Text("Best Available").tag("bestvideo")
+                        ForEach(viewModel.sortedVideoFormats) { Text($0.detailedDisplayName).tag($0.id) }
+                    }
+                    
+                    Picker("Audio Quality", selection: $viewModel.selectedAudioFormatId) {
+                        Text("Best Available").tag("bestaudio")
+                        ForEach(viewModel.uniqueAndSortedAudioFormats) { Text($0.audioDisplayName).tag($0.id) }
+                    }
+                    
+                    Picker("Convert To", selection: $viewModel.convertVideoFormat) {
+                        Text("None").tag(nil as String?)
+                        ForEach(viewModel.videoFormats, id: \.self) { Text($0.uppercased()).tag($0 as String?) }
+                    }
+                }
+                
+                // --- Section 4: Extras (Updated) ---
+                Section("Extras") {
+                    Toggle("Embed Subtitles", isOn: $viewModel.embedSubtitles)
+                    Toggle("Embed Thumbnail", isOn: $viewModel.embedThumbnail)
+                    Toggle("Embed Metadata", isOn: $viewModel.embedMetadata)
+                    Toggle("Embed Chapters", isOn: $viewModel.embedChapters) // New
+                }
+                
+                if let errorMessage = viewModel.errorMessage {
+                    Section { Text(errorMessage).foregroundColor(.red) }
+                }
+            }
+            .formStyle(.grouped)
+            
+            // --- Bottom Action Buttons ---
+            HStack {
+                Spacer()
+                Button("Cancel", role: .cancel, action: { dismiss() }).keyboardShortcut(.cancelAction)
+                Button("Start Download") {
+                    viewModel.startDownload()
+                    dismiss()
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(viewModel.urlString.isEmpty)
+                .keyboardShortcut(.defaultAction)
+            }
+            .padding()
+            .background(.bar)
+        }
+        .frame(minWidth: 650, idealWidth: 700, minHeight: 500, idealHeight: 580)
+        .onAppear {
+            viewModel.onStartDownload = self.onStartDownload
+        }
+    }
+}
+
+// Helper view for the info items
+struct InfoItem: View {
+    let icon: String
+    let value: String
+    let label: String
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Label(value, systemImage: icon)
+                .font(.subheadline.weight(.semibold))
+            Text(label)
+                .font(.caption2)
+        }
+        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
     }
 }
